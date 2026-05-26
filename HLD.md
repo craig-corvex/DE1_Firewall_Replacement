@@ -19,8 +19,14 @@ At time of writing, we define four security zones: the Edge zone, the Public zon
 |--------|-------|-----------|
 |Edge|Untrust|All networks external to the DE1 fabric|
 |Public|Trust|Public IP subnets for customer or internal use|
-|Services|Trust|Corvex supplied services|
-|Management|Trust|Corvex tool and monitoring|
+|Services|Trust|Central core services|
+|Management|Trust|Tool and monitoring|
+
+
+# Physical Layer Design
+
+<img width="841" height="767" alt="FW-New_Edge drawio" src="https://github.com/user-attachments/assets/b5a119e5-d822-48a4-a62e-32831a848f7e" />
+
 
 
 
