@@ -37,6 +37,7 @@ The physical layer design of the new Firewall layer loosely adheres to the exist
 
 (5) we have left 2x 100G ports per SRX as spares, should we need to expand further. Note that the throughput of the SRX 4300 tops out at ~70 Gbps, so we shouldn't expect full line rate on all ports.
 
+We reserve 2 10G ports to function as the InterChassis Link (ICL), which interconnects the two firewalls. The ICL is used to exchange firewall state information to ensure the packet processing state of the two firewalls in the Multi-node High Availability (MNHA) cluster remain synchronized. The ICL links are standard 10G ports, but are not used for transit traffic (e.g. as a packet forwarding/routing link between firewall chassis). 
 
 
 <img width="841" height="767" alt="FW-New_Edge drawio" src="https://github.com/user-attachments/assets/b5a119e5-d822-48a4-a62e-32831a848f7e" />
