@@ -10,6 +10,23 @@ The Firewall Replacement project is the final part of the larger Edge Network re
 The Firewall layer sits above the Ethernet fabric layer and below the Routed Edge layer within the Data Center converged network. The layer segments the network into distinct security zones. Each security zone is defined by a set of network interfaces and a single cohesive security policy with controls for ingress and egress network traffic.  
 
 
+<img width="241" height="460" alt="New_Firewall_Architecture drawio" src="https://github.com/user-attachments/assets/2083a47b-2741-4315-8449-025f967dec9a" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 At time of writing, we define four security zones: the Edge zone, the Public zone, the Services zone, and the Management zone. These function of these zones are described below:
 
 |  Zone  |                      Description                             |
