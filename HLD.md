@@ -37,21 +37,34 @@ The physical layer design of the new Firewall layer loosely adheres to the exist
 
 (5) we have left 2x 100G ports per SRX as spares, should we need to expand further. Note that the throughput of the SRX 4300 tops out at ~70 Gbps, so we shouldn't expect full line rate on all ports.
 
-We reserve 2 10G ports to function as the InterChassis Link (ICL), which interconnects the two firewalls. The ICL is used to exchange firewall state information to ensure the packet processing state of the two firewalls in the Multi-node High Availability (MNHA) cluster remain synchronized. The ICL links are standard 10G ports, but are not used for transit traffic (e.g. as a packet forwarding/routing link between firewall chassis). 
+We reserve 2 10G ports to function as the InterChassis Link (ICL), which interconnects the two firewalls. The ICL is used to exchange firewall state information to ensure the packet processing state of the two firewalls in the Multi-node High Availability (MNHA) cluster remain synchronized. The ICL links are standard 10G ports, but are not used for transit traffic (e.g. as a packet forwarding/routing link between firewall chassis). The ICL is a logical link, though we choose to implement this logical link on two physical links, as provides significant reliability.
 
 
 <img width="841" height="767" alt="FW-New_Edge drawio" src="https://github.com/user-attachments/assets/b5a119e5-d822-48a4-a62e-32831a848f7e" />
 
 
 
-
-
 # Key Functions
 
 
- ## MNHA – Hybrid mode
+## Mult-node High Availability
+
+In the design of the new Firewall layer, we have adhered to the Juniper reference architecture for Multi-node High Availability (https://www.juniper.net/documentation/us/en/software/junos/high-availability/topics/topic-map/mnha-introduction.html), and determined that the best deployment model for our particular needs is the Hybrid deployment model. In this MNHA deployment model, the firewalls employ Layer 3 routing (specificly, the BGP protocol) to provide high availability via redundant routed path upstream to the Edge routing layer, and employs Layer 2 high availability for downstream hosts via floating Virtual IP addresses as the default gateways for the respecitive subnets.  
+
+One advantage of this deployment model is that both Firewalls may act in an Active/Active capacity -- that is, both Firewalls are active simultaneous, and each can process traffic independant of the other. Contrast this with the Active/Standby model, where only one Firewall may process traffic unless there is a failure and subsequent failover. The hybrid model does have the caveat that the Firewall that owns the VIP is active for that subnet, since the VIP is the default gateway. However, there is no requirement that a single Firewall must be the owner of all the VIPs simultatneously -- rather, the active VIPs can be distributed between the two Firewalls. The ownership of the VIP is determined by configuration and by the measured health of the Firewall.
+
+The second advantage of the MNHA hybrid model is that, for the Layer 3 routed connections, the preferred routed path simply determines which Firewall should recieve the network traffic. Traffic need not be "pinned" to a particular Firewall. This said, we implement routing policy to ensure symetric ingress and egress paths to ensure a consistent and predictable network behavior.
+
+A schematic diagram is provided here:
+
+<img width="390" height="717" alt="FW-New_Edge_hybrid-model drawio" src="https://github.com/user-attachments/assets/a390186b-7cfb-40bd-a96d-f582c1560174" />
+
 
  ## Default Gateway
+
+
+
+
 
  ##  BGP Routing
 
