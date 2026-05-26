@@ -12,29 +12,14 @@ The Firewall layer sits above the Ethernet fabric layer and below the Routed Edg
 
 <img width="241" height="460" alt="New_Firewall_Architecture drawio" src="https://github.com/user-attachments/assets/2083a47b-2741-4315-8449-025f967dec9a" />
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 At time of writing, we define four security zones: the Edge zone, the Public zone, the Services zone, and the Management zone. These function of these zones are described below:
 
-|  Zone  |                      Description                             |
-|--------|--------------------------------------------------------------|
-| Edge   | The "untrust" zone                                           |
-| Public | Customer public IP address space                             |
-|Services| Corvex supplied services                                    |
-|Management| Corvex tool and monitoring                                |
+|  Zone  |Posture|Description|
+|--------|-------|-----------|
+| Edge   |Untrust|All external networks|
+| Public |Trust|Customer public IP address space|
+|Services|Trust|Corvex supplied services|
+|Management|Trust| Corvex tool and monitoring|
 
 
 
