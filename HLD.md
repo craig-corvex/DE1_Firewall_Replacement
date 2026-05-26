@@ -25,6 +25,20 @@ At time of writing, we define four security zones: the Edge zone, the Public zon
 
 # Physical Layer Design
 
+The physical layer design of the new Firewall layer loosely adheres to the existing physical layer design and is shown in the figure below. Some notable exceptions are: 
+
+(1) the SRX firewalls have sufficient port count to connect the firewalls directly to the edge routers, bypassing an underlying switching layer. This simplifies the physical layer design and implmentation, reduces configuration complexity, and makes troubleshooting and fault identification easier. Additionally, in the case of a link fault, the failover time is reduced because when a link is point-to-point vs through a switch, the link down signal on the routers is immediate; otherwise, the connection timer would need to expire before the router signaled the connection down.  
+
+(2) the increased port count is that we have seperated key subnets onto different physical interfaces. Consider our current physical network design: we have our two primary "revenue" subnets -- 104.218.236.0/23 and 160.72.54.124/25, and our two primary Services subnets -- 10130.0.0/24 and 10.120.0.0/24, sharing a single physical 100G port. In the nbew design, the two revenue subnets share a single 100G, whereas our Services subnets are placed on a seperate physical 100G interface. 
+
+(3) we have moved our OOB network subnets -- 172.20.0.0/24, 172.20.2.0/24, and 172.20.3.0/24 onto a 25G interface, upgrading from the existing 1G interface. 
+
+(4) we have increased the uplink capacity from the Firewall layer to the Routed Edge layer from 100G to 2x 100G per SRX-J7024 pair. This configuration increases both bandwidth capacity and the resliliency of the topology. 
+
+(5) we have left 2x 100G ports per SRX as spares, should we need to expand further. Note that the throughput of the SRX 4300 tops out at ~70 Gbps, so we shouldn't expect full line rate on all ports.
+
+
+
 <img width="841" height="767" alt="FW-New_Edge drawio" src="https://github.com/user-attachments/assets/b5a119e5-d822-48a4-a62e-32831a848f7e" />
 
 
