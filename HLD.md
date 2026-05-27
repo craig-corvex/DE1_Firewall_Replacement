@@ -62,11 +62,17 @@ A schematic diagram is provided here:
 
  ## Default Gateway
 
+The new Firewalls provide Layer 2 high availability to hosts via per-subnet floating IP default gateway functionality. With this functionality, the hosts are configured with a default gateway address that lives on the Firewall pair. The active Firewall responds as the default gateway unless the activeness verification check fails. In that case, the standyby Firewall will elevate itself to the Active state and will begin to respond as the default gateway. As was mentioned previously, there is no requirement that one Firewall perform as the active Firewall for all subnets simultaneously. Rather, one Firewall may be active for one set of subnets, while its peer may be active for a second set of subnets.
 
-
+Activeness is determined in the following ways. 1) A priority value is configured on the preferred Firewall for the specific Security Group (subnet), which ensures that it becomes the active Firewall on boot; 2) an activeness probe is enabled to actively test and respond to upstream network failures, tiggering a reduction of the priorty value and a change of activeness; and 3) path monitoring is enabled via an injected signal route, which verifies that a specific remote route is learned and is present in the Firewall's routing table as test that the path to that route is valid. 
 
 
  ##  BGP Routing
+
+
+
+
+
 
  ## Stateful firewall rules
 
