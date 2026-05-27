@@ -13,14 +13,6 @@ The Firewall layer sits above the Ethernet fabric layer and below the Routed Edg
 <img width="241" height="460" alt="New_Firewall_Architecture drawio" src="https://github.com/user-attachments/assets/2083a47b-2741-4315-8449-025f967dec9a" />
 
 
-At time of writing, we define four security zones: the Edge zone, the Public zone, the Services zone, and the Management zone. These function of these zones are described below:
-
-|Zone|Posture|Description|
-|--------|-------|-----------|
-|Edge|Untrust|All networks external to the DE1 fabric|
-|Public|Trust|Public IP subnets for customer or internal use|
-|Services|Trust|Central core services|
-|Management|Trust|Tool and monitoring|
 
 
 # Physical Layer Design
@@ -69,12 +61,40 @@ Activeness is determined in the following ways. 1) A priority value is configure
 
  ##  BGP Routing
 
+The new Firewalls use BGP routing to provide high availability via redundant routed paths upstream to the Edge routing layer. Both Firewalls actively and independantly participate in BGP . The new Firewall-to-Edge router topology is different than our current topology. In our current topology, we connect each Firewall to each Edge router, in a so-called "bowtie" configuration. This ensures physical redundancy, and reduces the hop count for packets traversing across the Edge fabric (e.g. from Firewall11 to Edge router-2 vs Firewall-1 to Edge Router-1 to Edge Router-2). In the new design, Firewall-1 only has a physical connection to Edge Router-1, and Firewall-2 only has a connection to Edge Router-2). We chose this design to ensure ingress and egress path symmetry and simplify the BGP route policy design. Each new Firewall will only have a single routed path ingress and egress (two ports in link aggregation). In case of an upstream failure, the active Firewall will failover to the standby (for the subnets the active Firewall is primary). To reach the opposite-side ISP, the Edge Router-1 to Edge Router-2 interconnect link is used. 
 
+Another design change we have made is to configure the new Firewalls in their own private Autonomous System (AS), vs having them in the same public AS the Edge Routers. The implication of this is that we will now use external BGP (eBGP) between the Edge Layer and the Firewall Layer vs using internal BGP (iBGP). This design change gives us much more flexibility in terms of routing policy because eBGP has more traffic control cababilties than iBGP, owning largely to the fact that iBGP mandates that an iBGP router not re-advertise routes it learns from other iBGP routers. Thus, iBGP requires a full mesh of iBGP speakers or a route reflector to ensure that each iBGP router have the same routing view as ther iBGP routers.  An additional benefit of having the Firewalls in a private, unique AS is that it follows an architecture where new Clusters may be added to the Edge fabric without impacting the existing Cluster. In this design, the Edge Routers act much like an ISP, where individual Compute clusters with unique AS zones are kept distinct and seperate from other Compute clusters, but are able to share the upstream Internet connections.
 
+A illustrative diagram is provided below.
+
+<img width="731" height="557" alt="FW-New_Edge_AS drawio" src="https://github.com/user-attachments/assets/d549e8eb-1578-4a42-8299-7bbd06835967" />
 
 
 
  ## Stateful firewall rules
+
+The primary difference between the SRX Firewall implementation and the Netgate TNSR implementation is that the SRX introduces Security Zones as the point of security enforcement, rather than the individual interfaces. A Security Zone is a set of one or more interfaces representing one or more IP subnets. Security policy rules are applied to the Zone rather than the individual interface. One the one hand, this makes the security posture easier to enforce, but on the other hand we must be mindful that rules applied to the Zone apply to all interface members of that zone. In other to simplify this, we organize the Security zones based on function. Specifically, we configure the following:
+
+We provide a diagram below.
+
+<img width="241" height="380" alt="New_Firewall_Zones drawio" src="https://github.com/user-attachments/assets/4a4f6abb-f7cf-4478-864a-8824f33f796e" />
+
+
+
+
+|Zone|Posture|Description|
+|--------|-------|-----------|
+|Edge|Untrust|All networks external to the DE1 fabric|
+|Public|Trust|Public IP subnets for customer or internal use|
+|Services|Trust|Central core services|
+|Management|Trust|Tool and monitoring|
+
+
+
+
+
+
+
 
  ## NAT
 
