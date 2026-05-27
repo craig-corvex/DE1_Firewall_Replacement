@@ -10,7 +10,7 @@ The Firewall Replacement project is the final part of the larger Edge Network re
 The Firewall layer sits above the Ethernet fabric layer and below the Routed Edge layer within the Data Center converged network. The layer segments the network into distinct security zones. Each security zone is defined by a set of network interfaces and a single cohesive security policy with controls for ingress and egress network traffic.  
 
 
-<img width="241" height="460" alt="New_Firewall_Architecture drawio" src="https://github.com/user-attachments/assets/701b760b-15f3-4919-b2d6-927864945d13" />
+<img width="241" height="412" alt="New_Firewall_Architecture drawio" src="https://github.com/user-attachments/assets/05e9e823-0f39-40cd-bb1c-4a7ef72be553" />
 
 
 
@@ -86,8 +86,8 @@ We provide a diagram below.
 |--------|-------|-----------|
 |Edge|Untrust|All networks external to the DE1 fabric|
 |Public|Trust|Public IP subnets for customer or internal use|
-|Services|Trust|Central core services|
-|Management|Trust|Tool and monitoring|
+|Services|Trust|Central core services such as DNS, NTP, etc.|
+|Management|Trust|Tools and monitoring|
 
 
 
