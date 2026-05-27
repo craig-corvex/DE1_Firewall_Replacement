@@ -39,7 +39,7 @@ We reserve 2 10G ports to function as the InterChassis Link (ICL), which interco
 # Key Functions
 
 
-## Mult-node High Availability
+## Multi-node High Availability
 
 In the design of the new Firewall layer, we adhere to the Juniper reference architecture for Multi-node High Availability (https://www.juniper.net/documentation/us/en/software/junos/high-availability/topics/topic-map/mnha-introduction.html), and determined that the best deployment model for our particular needs is the Hybrid deployment model. In this MNHA deployment model, the firewalls employ Layer 3 routing (specificly, the BGP protocol) to provide high availability via redundant routed path upstream to the Edge routing layer, and employs Layer 2 high availability for downstream hosts via floating Virtual IP addresses as the default gateways for the respective subnets.  
 
