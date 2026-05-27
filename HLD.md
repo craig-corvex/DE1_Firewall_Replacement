@@ -73,13 +73,11 @@ A illustrative diagram is provided below.
 
  ## Stateful firewall rules
 
-The primary difference between the SRX Firewall implementation and the Netgate TNSR implementation is that the SRX introduces Security Zones as the point of security enforcement, rather than the individual interfaces. A Security Zone is a set of one or more interfaces representing one or more IP subnets. Security policy rules are applied to the Zone rather than the individual interface. One the one hand, this makes the security posture easier to enforce, but on the other hand we must be mindful that rules applied to the Zone apply to all interface members of that zone. In other to simplify this, we organize the Security zones based on function. Specifically, we configure the following:
+The primary difference between the SRX Firewall implementation and the Netgate TNSR implementation is that the SRX introduces Security Zones as the point of security enforcement, rather than the individual interfaces. A Security Zone is a set of one or more interfaces representing one or more IP subnets. Security policy rules are applied to the Zone rather than the individual interface, though rules may be allied to individual interfaces as well. One the one hand, this makes the security posture easier to enforce, but on the other hand we must be mindful that rules applied to the Zone apply to all interface members of that zone. In other to simplify this, we organize the Security zones based on function. Specifically, we configure the following:
 
 We provide a diagram below.
 
 <img width="241" height="380" alt="New_Firewall_Zones drawio" src="https://github.com/user-attachments/assets/4a4f6abb-f7cf-4478-864a-8824f33f796e" />
-
-
 
 
 |Zone|Posture|Description|
@@ -89,16 +87,24 @@ We provide a diagram below.
 |Services|Trust|Central core services such as DNS, NTP, etc.|
 |Management|Trust|Tools and monitoring|
 
-
-
-
-
+In practice, the stateful firewall rules will remain largely the same. We will complete an audit of all rules to determine 1) whether the rule is valid considering the shift from interface-based policy to Zone-based policy; 2) whether the rule is applicable to our current customer-base; 3) whether the rule is applicable to the applications currently being used by our customer-base; and 4) whether the rule contributes to a least-acceptable access model. 
 
 
 
  ## NAT
 
+As with the TNSR Firewalls, the SRX Firewalls implement Static NAT, Source NAT, and Destination NAT functions. As with Security policies, NAT rules can be attached to Security Zone, an individiual interfaces, and individual routing-instances. For our needs, we limit our NAT rules to the associated Security Zones. 
+
+The order in which packets are processed by the SRX plaform is signficant, especially as it relates to the combination of Security policy and NAT rules. Below is a flow chart describing the process:
+
+
+<img width="875" height="383" alt="g030678" src="https://github.com/user-attachments/assets/11df3e0b-e9e7-472e-9bba-9810bd3039c1" />
+
+The important consideration here is with Static NAT and Destination NAT, as both of these functions occur prior to destination route look or security policy enforcement. In other words, for proper ingress (from the Internet to the host), a security policy must apply to the destination NAT address (often times the private IP address) for it to take affect. For example, when writing a ingres security rule for a host with a private IP address and a public NAT address, the rule must specify the private IP as the destination, not the public NAT address. 
+
+In practice, the NAT rules will remain largely the same. We will complete an audit of all rules to determine 1) whether the rule is valid considering the shift from interface-based policy to Zone-based policy; and 2) whether the rule is applicable to our current customer-base.
+
  ## Wireguard VPN
 
-
+The new Firewall platforms do not support Wireguard tunnel termination. Therefore, the Wireguard VPN tunnel will remain on a TNSR router -- likely TNSR1, until we have a longer term VPN solution. 
 
