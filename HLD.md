@@ -65,7 +65,8 @@ The new Firewalls use BGP routing to provide high availability via redundant rou
 
 Another design change we have made is to configure the new Firewalls in their own private Autonomous System (AS), vs having them in the same public AS the Edge Routers. The implication of this is that we will now use external BGP (eBGP) between the Edge Layer and the Firewall Layer vs using internal BGP (iBGP). This design change gives us much more flexibility in terms of routing policy because eBGP has more traffic control cababilties than iBGP, owning largely to the fact that iBGP mandates that an iBGP router not re-advertise routes it learns from other iBGP routers. Thus, iBGP requires a full mesh of iBGP speakers or a route reflector to ensure that each iBGP router have the same routing view as ther iBGP routers.  An additional benefit of having the Firewalls in a private, unique AS is that it follows an architecture where new Clusters may be added to the Edge fabric without impacting the existing Cluster. In this design, the Edge Routers act much like an ISP, where individual Compute clusters with unique AS zones are kept distinct and seperate from other Compute clusters, but are able to share the upstream Internet connections.
 
-A illustrative diagram is provided below.
+A diagram is provided below.
+
 
 <img width="731" height="557" alt="FW-New_Edge_AS drawio" src="https://github.com/user-attachments/assets/d549e8eb-1578-4a42-8299-7bbd06835967" />
 
@@ -77,7 +78,9 @@ The primary difference between the SRX Firewall implementation and the Netgate T
 
 We provide a diagram below.
 
+
 <img width="241" height="380" alt="New_Firewall_Zones drawio" src="https://github.com/user-attachments/assets/4a4f6abb-f7cf-4478-864a-8824f33f796e" />
+
 
 
 |Zone|Posture|Description|
@@ -104,7 +107,8 @@ The important consideration here is with Static NAT and Destination NAT, as both
 
 In practice, the NAT rules will remain largely the same. We will complete an audit of all rules to determine 1) whether the rule is valid considering the shift from interface-based policy to Zone-based policy; and 2) whether the rule is applicable to our current customer-base.
 
- ## Wireguard VPN
+
+## Wireguard VPN
 
 The new Firewall platforms do not support Wireguard tunnel termination. Therefore, the Wireguard VPN tunnel will remain on a TNSR router -- likely TNSR1, until we have a longer term VPN solution. 
 
