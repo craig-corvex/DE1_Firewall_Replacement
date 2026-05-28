@@ -79,7 +79,7 @@ A diagram is provided below.
 
 
 
- ## Security Zones and Stateful Firewall Rules
+ ## Security Zones
 
 The primary difference between the SRX Firewall implementation and the Netgate TNSR implementation is that the SRX introduces Security Zones as the point of security enforcement, rather than the individual interfaces. A Security Zone is a set of one or more interfaces representing one or more IP subnets. Security policy rules are applied to the Zone rather than the individual interface, though rules may be allied to individual interfaces as well. One the one hand, this makes the security posture easier to enforce, but on the other hand we must be mindful that rules applied to the Zone apply to all interface members of that zone. In other to simplify this, we organize the Security zones based on function. Specifically, we configure the following:
 
@@ -96,6 +96,11 @@ We provide a diagram below.
 |Public|Trust|Public IP subnets for customer or internal use|
 |Services|Trust|Central core services such as DNS, NTP, etc.|
 |Management|Trust|Tools and monitoring|
+
+
+
+## Stateful Firewall Rules
+
 
 In practice, the stateful firewall rules will remain largely the same. We will complete an audit of all rules to determine 1) whether the rule is valid considering the shift from interface-based policy to Zone-based policy; 2) whether the rule is applicable to our current customer-base; 3) whether the rule is applicable to the applications currently being used by our customer-base; and 4) whether the rule contributes to a least-acceptable access model. 
 
