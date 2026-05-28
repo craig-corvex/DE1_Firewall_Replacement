@@ -32,7 +32,8 @@ The physical layer design of the new Firewall layer loosely adheres to the exist
 We reserve 2 10G ports to function as the InterChassis Link (ICL), which interconnects the two firewalls. The ICL is used to exchange firewall state information to ensure the packet processing state of the two firewalls in the Multi-node High Availability (MNHA) cluster remain synchronized. The ICL links are standard 10G ports, but are not used for transit traffic (e.g. as a packet forwarding/routing link between firewall chassis). The ICL is a logical link, though we choose to implement this logical link on two physical links, as provides significant reliability.
 
 
-<img width="841" height="767" alt="FW-New_Edge drawio" src="https://github.com/user-attachments/assets/b5a119e5-d822-48a4-a62e-32831a848f7e" />
+<img width="841" height="767" alt="FW-New_Edge drawio" src="https://github.com/user-attachments/assets/b1d53ec7-1dac-4bc6-b847-92a0cdc2e277" />
+
 
 
 
