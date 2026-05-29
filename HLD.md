@@ -122,5 +122,5 @@ In practice, the NAT rules will remain largely the same. We will complete an aud
 
 ## Wireguard VPN
 
-The new Firewall platforms do not support Wireguard tunnel termination. Therefore, the Wireguard VPN tunnel will remain on a TNSR router -- likely TNSR1, until we have a longer term VPN solution. 
+The new Firewall platforms do not support Wireguard tunnel termination. Therefore, the Wireguard VPN tunnel will remain on a TNSR router -- likely TNSR1, until we have a longer term VPN solution.
 
